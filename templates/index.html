@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>abiGPT</title>
+
+    <!-- Link to the main.css file -->
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <h1>abiGPT</h1>
+
+    <form onsubmit="convertAbi(event)">
+        <div class="container">
+            <textarea id="abi" name="abi" rows="20" placeholder="Enter your ABI here..."></textarea>
+            <textarea id="converted_abi" name="converted_abi" rows="20" readonly></textarea>
+        </div>
+        <br>
+        <label for="abi_type">Conversion format:</label>
+        <select id="abi_type" name="abi_type">
+            <option value="human-readable">Human-readable</option>
+            <option value="solidity json">Solidity JSON</option>
+            <option value="solidity object">Solidity Object</option>
+        </select>
+        <button type="submit">Convert ABI</button>
+    </form>
+
+    <!-- Link to the main.js file -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
