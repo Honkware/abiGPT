@@ -12,30 +12,37 @@ app = Flask(__name__)
 llm = OpenAI(
     openai_api_key=os.environ.get('OPENAI_API_KEY'),
     model_name="gpt-3.5-turbo",
-    temperature=0.3,
+    temperature=0.1,
 )
 
 def convert_abi(abi, abi_type):
     # Template string for the ABI conversion prompt
     abi_detection_conversion_template = f"""
-    As an ABI converter program, my purpose is to convert valid Ethereum contract Application Binary Interface (ABI) inputs into the specified formats. I will not engage in any conversation, discussion, or process inappropriate content. If the input is invalid, unsupported, or inappropriate, I will return a simple error message stating, "Invalid ABI input."
+    As an ABI converter, I convert Ethereum contract ABI inputs into specified formats without processing inappropriate content. Invalid inputs return "Invalid ABI input."
     
     Input: Ethereum contract ABI
     {{abi}}
     
-    Task: Detect and convert the ABI provided into the {{abi_type}} format.
+    Task: Convert the ABI provided into the {{abi_type}} format.
     
-    For reference, the available ABI types and their explanation are as follows:
+    ABI types with short examples:
+    - Human-readable: {{hr_example}}
+    - Solidity JSON: {{json_example}}
+    - Solidity Object: {{obj_example}}
     
-    - Human-readable: A human-readable string that describes the function signature or event.
-    - Solidity JSON: A JSON representation of the ABI used by the Solidity compiler.
-    - Solidity Object: A JavaScript object that represents the ABI, used by ethers.js library.
+    Output: Include only the converted ABI. Do not add extra descriptors like "Human-Readable:", "Solidity JSON:", "Solidity Object:".
     
-    Output: Only include the converted ABI in your response. Do not include any additional explanations or descriptors before or after the converted ABI.
+    Important: Make sure to output the ABI in the correct {{abi_type}} format. If the requested format is Human-readable, the output should not be in JSON or Object format. Similarly, if the requested format is Solidity JSON or Solidity Object, the output should not be in human-readable format.
     """
-
+    
     # Replace placeholders in the template string with actual values
-    abi_detection_conversion_prompt = abi_detection_conversion_template.format(abi=abi, abi_type=abi_type)
+    abi_detection_conversion_prompt = abi_detection_conversion_template.format(
+        abi=abi, 
+        abi_type=abi_type, 
+        hr_example='function transfer(address to, uint256 amount)', 
+        json_example='{"type": "function", "name": "transfer", "inputs": [{"name": "to", "type": "address"}, {"name": "amount", "type": "uint256"}]}', 
+        obj_example='{type: "function", name: "transfer", inputs: [{name: "to", type: "address"}, {name: "amount", type: "uint256"}]}'
+    )
 
     # Use the OpenAI language model to generate the converted ABI
     abi_detection_conversion_response = llm(abi_detection_conversion_prompt)
