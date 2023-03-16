@@ -13,6 +13,10 @@ abiGPT is an ABI converter that uses GPT AI models to convert Ethereum ABIs into
 - 📋 Multiple output formats
 - 🌐 Flask-based web application
 
+## 🌐 Web App Demo
+
+Try out abiGPT's web application demo at: https://abiGPT-webapp.honkware.repl.co
+
 ## 🛠 Installation & Setup
 
 1. Clone the repository:
